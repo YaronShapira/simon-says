@@ -1,0 +1,29 @@
+.game-board {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    .game-board-wrapper {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+    .simon-button {
+        width: 150px;
+        height: 150px;
+        background: white;
+
+        &.simon-1 {
+            background: #2bd148;
+        }
+        &.simon-2 {
+            background: #f84539;
+        }
+        &.simon-3 {
+            background: #f7e227;
+        }
+        &.simon-4 {
+            background: #3d69d7;
+        }
+    }
+}

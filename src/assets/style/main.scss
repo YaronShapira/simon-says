@@ -1,0 +1,12 @@
+// BASE
+@import './base/vars.scss';
+@import './base/css-reset.scss';
+@import './base/font.scss';
+@import './base/layout.scss';
+@import './base/app.scss';
+
+// PAGES
+@import './pages/simon-says.scss';
+
+// CMPS
+@import './cmps/game-board.scss';
