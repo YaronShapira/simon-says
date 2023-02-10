@@ -54,10 +54,6 @@
         box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 8px 24px,
             rgba(17, 17, 26, 0.1) 0px 16px 48px;
 
-        &.clicked {
-            box-shadow: 0 0 8px 4px #ffffff, 0 0 32px 18px currentColor;
-        }
-
         &.green {
             color: #2bd148;
             background: #2bd148;
