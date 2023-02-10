@@ -6,6 +6,7 @@ export default function GameBoard() {
                 <div className='simon-button simon-2'></div>
                 <div className='simon-button simon-3'></div>
                 <div className='simon-button simon-4'></div>
+                <div className='score'>9</div>
             </div>
         </div>
     )

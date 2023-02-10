@@ -4,25 +4,48 @@
     align-items: center;
     height: 100%;
     .game-board-wrapper {
+        position: relative;
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        gap: 1rem;
+        gap: 1.5rem;
+
+        .score {
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            z-index: 2;
+            top: 50%;
+            left: 50%;
+            background: $bg-color;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            box-shadow: 0px 0px 50px 2px $bg-color;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 5rem;
+        }
     }
     .simon-button {
-        width: 150px;
-        height: 150px;
-        background: white;
+        width: 240px;
+        height: 240px;
+        box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 8px 24px,
+            rgba(17, 17, 26, 0.1) 0px 16px 48px;
 
         &.simon-1 {
+            border-radius: 100% 0% 0% 100% / 100% 100% 0% 0%;
             background: #2bd148;
         }
         &.simon-2 {
+            border-radius: 0% 100% 0% 100% / 100% 100% 0% 0%;
             background: #f84539;
         }
         &.simon-3 {
+            border-radius: 100% 0% 0% 100% / 0% 100% 0% 100%;
             background: #f7e227;
         }
         &.simon-4 {
+            border-radius: 100% 0% 100% 0% / 0% 0% 100% 100%;
             background: #3d69d7;
         }
     }
