@@ -3,6 +3,27 @@
     justify-content: center;
     align-items: center;
     height: 100%;
+
+    &.green {
+        .green {
+            box-shadow: 0 0 8px 4px #ffffff, 0 0 32px 18px currentColor;
+        }
+    }
+    &.red {
+        .red {
+            box-shadow: 0 0 8px 4px #ffffff, 0 0 32px 18px currentColor;
+        }
+    }
+    &.yellow {
+        .yellow {
+            box-shadow: 0 0 8px 4px #ffffff, 0 0 32px 18px currentColor;
+        }
+    }
+    &.blue {
+        .blue {
+            box-shadow: 0 0 8px 4px #ffffff, 0 0 32px 18px currentColor;
+        }
+    }
     .game-board-wrapper {
         position: relative;
         display: grid;
@@ -37,28 +58,28 @@
             box-shadow: 0 0 8px 4px #ffffff, 0 0 32px 18px currentColor;
         }
 
-        &.simon-1 {
+        &.green {
             color: #2bd148;
             background: #2bd148;
             border-radius: 100% 0% 0% 100% / 100% 100% 0% 0%;
             border-bottom-left-radius: 5%;
             border-top-right-radius: 5%;
         }
-        &.simon-2 {
+        &.red {
             color: #f84539;
             background: #f84539;
             border-radius: 0% 100% 0% 100% / 100% 100% 0% 0%;
             border-top-left-radius: 5%;
             border-bottom-right-radius: 5%;
         }
-        &.simon-3 {
+        &.yellow {
             color: #f7e227;
             background: #f7e227;
             border-radius: 100% 0% 0% 100% / 0% 100% 0% 100%;
             border-top-left-radius: 5%;
             border-bottom-right-radius: 5%;
         }
-        &.simon-4 {
+        &.blue {
             color: #3d69d7;
             background: #3d69d7;
             border-radius: 100% 0% 100% 0% / 0% 0% 100% 100%;
