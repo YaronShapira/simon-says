@@ -9,10 +9,12 @@ const SHOW_COLOR_TIME: number = 750
 // }
 
 export default function GameBoard() {
-    const [simonOrder, setSimonOrder] = useState(['red', 'green', 'yellow'])
+    const [simonOrder, setSimonOrder] = useState(['red'])
     const [userOrder, setUserOrder] = useState<string[]>([])
     const [isUserTurn, setIsUserTurn] = useState(false)
     const gameBoardRef = useRef() as RefObject<HTMLDivElement>
+
+    const simonColors = ['red', 'green', 'yellow', 'blue']
 
     function onSimonButton(ev: React.MouseEvent<HTMLDivElement>) {
         const elTarget = ev.target as HTMLDivElement
@@ -39,13 +41,15 @@ export default function GameBoard() {
         setIsUserTurn(true)
     }
 
-    function simonTurn(){
-
+    async function simonTurn() {
+        await utilService.wait(SHOW_COLOR_TIME * 2)
+        const simonChosenColor = utilService.getRandomItemFromArray(simonColors)
+        setSimonOrder(prev => [...prev, simonChosenColor])
     }
-    
+
     useEffect(() => {
         playSimonOrder()
-    }, [])
+    }, [simonOrder])
 
     useEffect(() => {
         console.log(isUserTurn, userOrder)
@@ -57,7 +61,9 @@ export default function GameBoard() {
         } else {
             console.log('YOU LOST')
         }
-        if (userOrder.length === simonOrder.length){
+        if (userOrder.length === simonOrder.length) {
+            setUserOrder([])
+            setIsUserTurn(false)
             simonTurn()
         }
     }, [userOrder])
@@ -68,7 +74,7 @@ export default function GameBoard() {
                 <div className='simon-button red'></div>
                 <div className='simon-button yellow'></div>
                 <div className='simon-button blue'></div>
-                <div className='score'>9</div>
+                <div className='score'>{simonOrder.length - 1}</div>
             </div>
         </div>
     )
