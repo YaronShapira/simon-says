@@ -1,15 +1,15 @@
-import react, { useEffect, useRef, RefObject, useState } from 'react'
+import { useEffect, useRef, RefObject, useState } from 'react'
 import { utilService } from '../services/util.service'
-
+import { IState as Props } from '../pages/SimonSays'
 const SHOW_COLOR_TIME: number = 750
 
-// interface IProps {
-//     isUserTurn: boolean
-//     simonOrder: string[]
-// }
+interface IProps {
+    gameState: Props['gameState']
+    setGameState: React.Dispatch<React.SetStateAction<Props['gameState']>>
+}
 
-export default function GameBoard() {
-    const [simonOrder, setSimonOrder] = useState(['red'])
+export default function GameBoard({ gameState, setGameState }: IProps) {
+    const [simonOrder, setSimonOrder] = useState<string[]>([])
     const [userOrder, setUserOrder] = useState<string[]>([])
     const [isUserTurn, setIsUserTurn] = useState(false)
     const gameBoardRef = useRef() as RefObject<HTMLDivElement>
@@ -48,32 +48,35 @@ export default function GameBoard() {
     }
 
     useEffect(() => {
+        
+    }, [gameState.isPlaying])
+
+    useEffect(() => {
         playSimonOrder()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [simonOrder])
 
     useEffect(() => {
-        console.log(isUserTurn, userOrder)
-
         if (!isUserTurn || !userOrder.at(-1)) return
 
-        if (simonOrder[userOrder.length - 1] === userOrder.at(-1)) {
-            console.log('NICE')
-        } else {
-            console.log('YOU LOST')
+        if (simonOrder[userOrder.length - 1] !== userOrder.at(-1)) {
+            // setGameState(prev => ({ ...prev, isLost: true }))
+            return
         }
         if (userOrder.length === simonOrder.length) {
             setUserOrder([])
             setIsUserTurn(false)
             simonTurn()
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [userOrder])
     return (
         <div className='game-board' ref={gameBoardRef}>
             <div className='game-board-wrapper' onClick={onSimonButton}>
-                <div className='simon-button green'></div>
-                <div className='simon-button red'></div>
-                <div className='simon-button yellow'></div>
-                <div className='simon-button blue'></div>
+                <button className='simon-button green'></button>
+                <button className='simon-button red'></button>
+                <button className='simon-button yellow'></button>
+                <button className='simon-button blue'></button>
                 <div className='score'>{simonOrder.length - 1}</div>
             </div>
         </div>
