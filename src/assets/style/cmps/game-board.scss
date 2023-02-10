@@ -41,21 +41,29 @@
             color: #2bd148;
             background: #2bd148;
             border-radius: 100% 0% 0% 100% / 100% 100% 0% 0%;
+            border-bottom-left-radius: 5%;
+            border-top-right-radius: 5%;
         }
         &.simon-2 {
             color: #f84539;
             background: #f84539;
             border-radius: 0% 100% 0% 100% / 100% 100% 0% 0%;
+            border-top-left-radius: 5%;
+            border-bottom-right-radius: 5%;
         }
         &.simon-3 {
             color: #f7e227;
             background: #f7e227;
             border-radius: 100% 0% 0% 100% / 0% 100% 0% 100%;
+            border-top-left-radius: 5%;
+            border-bottom-right-radius: 5%;
         }
         &.simon-4 {
             color: #3d69d7;
             background: #3d69d7;
             border-radius: 100% 0% 100% 0% / 0% 0% 100% 100%;
+            border-top-right-radius: 5%;
+            border-bottom-left-radius: 5%;
         }
     }
 }
