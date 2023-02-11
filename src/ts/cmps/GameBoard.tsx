@@ -5,6 +5,7 @@ import audioUrl1 from '../../assets/sounds/simonSound1.mp3'
 import audioUrl2 from '../../assets/sounds/simonSound2.mp3'
 import audioUrl3 from '../../assets/sounds/simonSound3.mp3'
 import audioUrl4 from '../../assets/sounds/simonSound4.mp3'
+import audioLoseURL from '../../assets/sounds/error.wav'
 const SHOW_COLOR_TIME: number = 500
 const simonColors: string[] = ['red', 'green', 'yellow', 'blue']
 const simonSoundsMap: { [key: string]: HTMLAudioElement } = {
@@ -91,8 +92,6 @@ export default function GameBoard({ gameState, setGameState, onLose }: IProps) {
             gameBoardRef.current?.classList.remove(clickedColor)
         }, SHOW_COLOR_TIME)
 
-        playSound(clickedColor)
-
         setUserOrder(prev => [...prev, clickedColor])
     }
 
@@ -103,6 +102,7 @@ export default function GameBoard({ gameState, setGameState, onLose }: IProps) {
     async function playSimonOrder() {
         for (const color of simonOrder) {
             gameBoardRef.current?.classList.add(color)
+            simonSoundsMap[color].play()
             await utilService.wait(SHOW_COLOR_TIME)
             gameBoardRef.current?.classList.remove(color)
             await utilService.wait(SHOW_COLOR_TIME - 300)

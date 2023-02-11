@@ -4,6 +4,7 @@ import LostModal from '../cmps/LostModal'
 import { simonSaysService } from '../services/simonsays.service'
 import InstructionsModal from '../cmps/InstructionsModal'
 
+
 export interface IState {
     gameState: {
         isPlaying: boolean
