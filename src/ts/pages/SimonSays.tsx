@@ -3,6 +3,7 @@ import GameBoard from '../cmps/GameBoard'
 import LostModal from '../cmps/LostModal'
 import { simonSaysService } from '../services/simonsays.service'
 import InstructionsModal from '../cmps/InstructionsModal'
+import UtilityButtons from '../cmps/UtilityButtons'
 
 export interface IState {
     gameState: {
@@ -13,7 +14,6 @@ export interface IState {
 }
 
 export default function SimonSays() {
-
     const [highScore, setHighScore] = useState(0)
     const [isInstructionsOpen, setIsInstructionsOpen] = useState(true)
     const [gameState, setGameState] = useState<IState['gameState']>({ isPlaying: false, isLost: false, score: 0 })
@@ -41,6 +41,10 @@ export default function SimonSays() {
         setIsInstructionsOpen(false)
     }
 
+    function onInstructions() {
+        setIsInstructionsOpen(true)
+    }
+
     return (
         <div className='simon-says'>
             <p className='high-score'>High Score: {highScore}</p>
@@ -48,7 +52,7 @@ export default function SimonSays() {
             <GameBoard gameState={gameState} setGameState={setGameState} onLose={onLose} />
             {gameState.isLost && <LostModal score={gameState.score} onStart={onStart} />}
             <div className='copyright'>Copyright © 2023 Yaron Shapira. All rights reserved.</div>
-            <button></button>
+            <UtilityButtons onInstructions={onInstructions} onStart={onStart}/>
         </div>
     )
 }
