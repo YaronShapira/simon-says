@@ -22,7 +22,7 @@ export default function SimonSays() {
         setHighScore(highScore)
     }
     async function updateHighScore() {
-        simonSaysService.post(gameState.score)
+        const highScore = await simonSaysService.post(gameState.score)
         setHighScore(highScore)
     }
 

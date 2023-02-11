@@ -1,8 +1,18 @@
 import { useEffect, useRef, RefObject, useState } from 'react'
 import { utilService } from '../services/util.service'
 import { IState as Props } from '../pages/SimonSays'
+import audioUrl1 from '../../assets/sounds/simonSound1.mp3'
+import audioUrl2 from '../../assets/sounds/simonSound2.mp3'
+import audioUrl3 from '../../assets/sounds/simonSound3.mp3'
+import audioUrl4 from '../../assets/sounds/simonSound4.mp3'
 const SHOW_COLOR_TIME: number = 500
 const simonColors: string[] = ['red', 'green', 'yellow', 'blue']
+const simonSoundsMap: { [key: string]: HTMLAudioElement } = {
+    green: new Audio(audioUrl1),
+    red: new Audio(audioUrl2),
+    yellow: new Audio(audioUrl3),
+    blue: new Audio(audioUrl4),
+}
 
 interface IProps {
     gameState: Props['gameState']
@@ -81,7 +91,13 @@ export default function GameBoard({ gameState, setGameState, onLose }: IProps) {
             gameBoardRef.current?.classList.remove(clickedColor)
         }, SHOW_COLOR_TIME)
 
+        playSound(clickedColor)
+
         setUserOrder(prev => [...prev, clickedColor])
+    }
+
+    function playSound(clickedColor: string) {
+        simonSoundsMap[clickedColor].play()
     }
 
     async function playSimonOrder() {
