@@ -6,6 +6,7 @@ import audioUrl2 from '../../assets/sounds/simonSound2.mp3'
 import audioUrl3 from '../../assets/sounds/simonSound3.mp3'
 import audioUrl4 from '../../assets/sounds/simonSound4.mp3'
 import audioLoseURL from '../../assets/sounds/error.wav'
+
 const SHOW_COLOR_TIME: number = 500
 const simonColors: string[] = ['red', 'green', 'yellow', 'blue']
 const simonSoundsMap: { [key: string]: HTMLAudioElement } = {
@@ -27,7 +28,6 @@ export default function GameBoard({ gameState, setGameState, onLose }: IProps) {
     const [isUserTurn, setIsUserTurn] = useState<Boolean>(false)
 
     const gameBoardRef = useRef() as RefObject<HTMLDivElement>
-    // const colorTimeoutId = useRef<ReturnType<typeof setTimeout> | null>(null)
     const colorTimeoutId = useRef<any>(null)
 
     useEffect(() => {

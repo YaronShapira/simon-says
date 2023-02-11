@@ -13,6 +13,11 @@ export interface IState {
 }
 
 export default function SimonSays() {
+
+    const [highScore, setHighScore] = useState(0)
+    const [isInstructionsOpen, setIsInstructionsOpen] = useState(true)
+    const [gameState, setGameState] = useState<IState['gameState']>({ isPlaying: false, isLost: false, score: 0 })
+
     useEffect(() => {
         getHighScore()
     }, [])
@@ -35,9 +40,6 @@ export default function SimonSays() {
         setGameState({ score: 0, isLost: false, isPlaying: true })
         setIsInstructionsOpen(false)
     }
-    const [highScore, setHighScore] = useState(0)
-    const [isInstructionsOpen, setIsInstructionsOpen] = useState(true)
-    const [gameState, setGameState] = useState<IState['gameState']>({ isPlaying: false, isLost: false, score: 0 })
 
     return (
         <div className='simon-says'>
@@ -45,6 +47,8 @@ export default function SimonSays() {
             {isInstructionsOpen && <InstructionsModal onStart={onStart} />}
             <GameBoard gameState={gameState} setGameState={setGameState} onLose={onLose} />
             {gameState.isLost && <LostModal score={gameState.score} onStart={onStart} />}
+            <div className='copyright'>Copyright © 2023 Yaron Shapira. All rights reserved.</div>
+            <button></button>
         </div>
     )
 }
