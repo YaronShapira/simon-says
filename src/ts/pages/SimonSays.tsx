@@ -23,12 +23,20 @@ export default function SimonSays() {
     }, [])
 
     async function getHighScore() {
-        const highScore = await simonSaysService.get()
-        setHighScore(highScore)
+        try {
+            const highScore = await simonSaysService.get()
+            setHighScore(highScore)
+        } catch (err) {
+            console.log('Problem with GETting high score from the server', err)
+        }
     }
     async function updateHighScore() {
-        const highScore = await simonSaysService.post(gameState.score)
-        setHighScore(highScore)
+        try {
+            const highScore = await simonSaysService.post(gameState.score)
+            setHighScore(highScore)
+        } catch (err) {
+            console.log('Problem with POSTing high score to the server', err)
+        }
     }
 
     function onLose() {
@@ -42,6 +50,7 @@ export default function SimonSays() {
 
     function onExitInstructions() {
         setIsInstructionsOpen(false)
+        // if already playing (clicked on info)
         if (gameState.isPlaying) return
 
         onStart()

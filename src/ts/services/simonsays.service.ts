@@ -8,17 +8,29 @@ var axios = Axios.create({
 const BASE_URL: string = process.env.NODE_ENV === 'production' ? '/api/' : '//localhost:3030/api/'
 
 async function get() {
-    const response = await fetch(BASE_URL + 'simon-says', { method: 'GET', credentials: 'include' })
-    const data = await response.json()
-    return data
+    try {
+        // const response = await fetch(BASE_URL + 'simon-says', { method: 'GET', credentials: 'include' })
+        const response = await axios({
+            url: BASE_URL + 'simon-says',
+            method: 'get',
+        })
+        const data = await response.data
+        return data
+    } catch (err) {
+        throw err
+    }
 }
 
 async function post(highScore: number) {
-    const res = await axios({
-        url: BASE_URL + 'simon-says',
-        method: 'post',
-        data: { score: highScore },
-    })
-    const data = await res.data
-    return data
+    try {
+        const res = await axios({
+            url: BASE_URL + 'simon-says',
+            method: 'post',
+            data: { score: highScore },
+        })
+        const data = await res.data
+        return data
+    } catch (err) {
+        throw err
+    }
 }
