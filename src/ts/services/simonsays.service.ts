@@ -10,7 +10,7 @@ const BASE_URL: string = process.env.NODE_ENV === 'production' ? '/api/' : '//lo
 async function get() {
     const response = await fetch(BASE_URL + 'simon-says', { method: 'GET', credentials: 'include' })
     const data = await response.json()
-    console.log(data)
+    return data
 }
 
 async function post(highScore: number) {
@@ -20,5 +20,5 @@ async function post(highScore: number) {
         data: { score: highScore },
     })
     const data = await res.data
-    console.log(data)
+    return data
 }
