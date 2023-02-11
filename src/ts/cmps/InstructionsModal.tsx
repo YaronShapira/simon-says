@@ -1,10 +1,12 @@
+import Modal from './Modal'
+
 interface IProps {
     onStart: () => void
 }
 
 export default function InstructionsModal({ onStart }: IProps) {
     return (
-        <div className='lost-modal'>
+        <Modal>
             <h2>Simon Says!</h2>
             <h4>Introduction</h4>
             <p>Welcome to the Simon says game!</p>
@@ -17,6 +19,6 @@ export default function InstructionsModal({ onStart }: IProps) {
             <h4>Good Luck!</h4>
             <p>Have fun</p>
             <button onClick={onStart}>Let's Go!</button>
-        </div>
+        </Modal>
     )
 }

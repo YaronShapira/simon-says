@@ -7,7 +7,7 @@ const simonColors: string[] = ['red', 'green', 'yellow', 'blue']
 interface IProps {
     gameState: Props['gameState']
     setGameState: React.Dispatch<React.SetStateAction<Props['gameState']>>
-    onLose: (score: number) => void
+    onLose: () => void
 }
 
 export default function GameBoard({ gameState, setGameState, onLose }: IProps) {
@@ -16,6 +16,52 @@ export default function GameBoard({ gameState, setGameState, onLose }: IProps) {
     const [isUserTurn, setIsUserTurn] = useState<Boolean>(false)
 
     const gameBoardRef = useRef() as RefObject<HTMLDivElement>
+
+    useEffect(() => {
+        if (gameState.isPlaying) {
+            newGame()
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [gameState.isPlaying])
+
+    useEffect(() => {
+        playSimonOrder()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [simonOrder])
+
+    useEffect(() => {
+        if (!isUserTurn || !userOrder.at(-1)) return
+
+        if (simonOrder[userOrder.length - 1] !== userOrder.at(-1)) {
+            return onLose()
+        }
+        if (userOrder.length === simonOrder.length) {
+            nextSimonTurn()
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [userOrder])
+
+    async function simonTurn() {
+        await utilService.wait(SHOW_COLOR_TIME * 2)
+        const simonChosenColor = utilService.getRandomItemFromArray(simonColors)
+
+        // this will trigger useEffect which will playSimonOrder()
+        setSimonOrder(prev => [...prev, simonChosenColor])
+    }
+
+    function newGame() {
+        setSimonOrder([])
+        setUserOrder([])
+        setIsUserTurn(false)
+        simonTurn()
+    }
+
+    async function nextSimonTurn() {
+        setUserOrder([])
+        setIsUserTurn(false)
+        simonTurn()
+        setGameState(prev => ({ ...prev, score: prev.score + 1 }))
+    }
 
     function onSimonButton(ev: React.MouseEvent<HTMLDivElement>) {
         const elTarget = ev.target as HTMLDivElement
@@ -42,54 +88,6 @@ export default function GameBoard({ gameState, setGameState, onLose }: IProps) {
         setIsUserTurn(true)
     }
 
-    async function simonTurn() {
-        await utilService.wait(SHOW_COLOR_TIME * 2)
-        const simonChosenColor = utilService.getRandomItemFromArray(simonColors)
-
-        // this will trigger useEffect which will playSimonOrder()
-        setSimonOrder(prev => [...prev, simonChosenColor])
-    }
-
-    function newGame() {
-        setSimonOrder([])
-        setUserOrder([])
-        setIsUserTurn(false)
-        simonTurn()
-    }
-
-    async function nextSimonTurn() {
-        setUserOrder([])
-        setIsUserTurn(false)
-        simonTurn()
-        setGameState(prev => ({ ...prev, score: prev.score + 1 }))
-    }
-
-    useEffect(() => {
-        if (gameState.isPlaying) {
-            newGame()
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [gameState.isPlaying])
-
-    useEffect(() => {
-        playSimonOrder()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [simonOrder])
-
-    useEffect(() => {
-        if (!isUserTurn || !userOrder.at(-1)) return
-
-        if (simonOrder[userOrder.length - 1] !== userOrder.at(-1)) {
-            // LOST
-            const score = simonOrder.length - 1
-            onLose(score)
-            return
-        }
-        if (userOrder.length === simonOrder.length) {
-            nextSimonTurn()
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [userOrder])
     return (
         <div className='game-board' ref={gameBoardRef}>
             <div className='game-board-wrapper' onClick={onSimonButton}>
