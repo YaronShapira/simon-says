@@ -5,6 +5,7 @@ const cors = require('cors')
 const app = express()
 const cookieParser = require('cookie-parser')
 const simonSays = require('./services/simonsays.service.ts')
+const simonSaysController = require('./controller/simonsays.controller.ts')
 
 app.use(express.static('public'))
 app.use(cookieParser())
@@ -42,13 +43,11 @@ app.post(
         req: { cookies: { highScore: string }; body: { score: any } },
         res: { cookie: (arg0: string, arg1: string) => void; send: (arg0: any) => any }
     ) => {
-        const highScore = JSON.parse(req.cookies.highScore)
-        const userId = highScore.id
-        const userScore = req.body.score
-        const newScore = simonSays.updateScore(userId, userScore)
-        const user = { id: userId, score: newScore }
+        const { id: userId } = JSON.parse(req.cookies.highScore)
+        const userScore = simonSaysController.getUpdatedScore(userId, req.body.score)
+        const user = { id: userId, score: userScore }
         res.cookie('highScore', JSON.stringify(user))
-        return res.send(newScore.toString())
+        return res.send(userScore.toString())
     }
 )
 

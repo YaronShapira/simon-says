@@ -66,7 +66,7 @@ export default function GameBoard({ gameState, setGameState, onLose }: IProps) {
         const simonChosenColor = utilService.getRandomItemFromArray(simonColors)
 
         // this will trigger useEffect which will playSimonOrder()
-        setSimonOrder(prev => [...prev, simonChosenColor])
+        setSimonOrder(prevSimonOrder => [...prevSimonOrder, simonChosenColor])
     }
 
     function newGame() {
@@ -80,7 +80,7 @@ export default function GameBoard({ gameState, setGameState, onLose }: IProps) {
         setUserOrder([])
         setIsUserTurn(false)
         simonTurn()
-        setGameState(prev => ({ ...prev, score: prev.score + 1 }))
+        setGameState(prevGameState => ({ ...prevGameState, score: prevGameState.score + 1 }))
     }
 
     function onSimonButton(ev: React.MouseEvent<HTMLDivElement>) {
@@ -102,7 +102,7 @@ export default function GameBoard({ gameState, setGameState, onLose }: IProps) {
             gameBoardRef.current?.classList.remove(clickedColor)
         }, SHOW_COLOR_TIME)
 
-        setUserOrder(prev => [...prev, clickedColor])
+        setUserOrder(prevUserOrder => [...prevUserOrder, clickedColor])
     }
 
     function playSound(clickedColor: string) {

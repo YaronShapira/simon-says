@@ -23,6 +23,7 @@ function newUser() {
 }
 
 function updateScore(userId: string, score: number) {
+    console.log('userId, score:', userId, score)
     const userIdx = scores.findIndex((score: { id: string }) => score.id === userId)
     const user = scores[userIdx]
     if (user.score > score) return user.score

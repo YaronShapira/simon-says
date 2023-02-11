@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
+import { simonSaysService } from '../services/simonsays.service'
+
 import GameBoard from '../cmps/GameBoard'
 import LostModal from '../cmps/LostModal'
-import { simonSaysService } from '../services/simonsays.service'
 import InstructionsModal from '../cmps/InstructionsModal'
 import UtilityButtons from '../cmps/UtilityButtons'
 
@@ -14,8 +15,8 @@ export interface IState {
 }
 
 export default function SimonSays() {
-    const [highScore, setHighScore] = useState(0)
-    const [isInstructionsOpen, setIsInstructionsOpen] = useState(true)
+    const [highScore, setHighScore] = useState<number>(0)
+    const [isInstructionsOpen, setIsInstructionsOpen] = useState<Boolean>(true)
     const [gameState, setGameState] = useState<IState['gameState']>({ isPlaying: false, isLost: false, score: 0 })
 
     useEffect(() => {
@@ -24,24 +25,24 @@ export default function SimonSays() {
 
     async function getHighScore() {
         try {
-            const highScore = await simonSaysService.get()
+            const highScore = await simonSaysService.getHighScore()
             setHighScore(highScore)
         } catch (err) {
-            console.log('Problem with GETting high score from the server', err)
+            console.error('Problem with GETting high score from the server', err)
         }
     }
     async function updateHighScore() {
         try {
-            const highScore = await simonSaysService.post(gameState.score)
+            const highScore = await simonSaysService.updateHighScore(gameState.score)
             setHighScore(highScore)
         } catch (err) {
-            console.log('Problem with POSTing high score to the server', err)
+            console.error('Problem with POSTing high score to the server', err)
         }
     }
 
     function onLose() {
-        setGameState(prev => ({ ...prev, isPlaying: false, isLost: true }))
         updateHighScore()
+        setGameState(prevGameState => ({ ...prevGameState, isPlaying: false, isLost: true }))
     }
 
     function onStart() {
@@ -70,7 +71,6 @@ export default function SimonSays() {
             {isInstructionsOpen && <InstructionsModal onExitInstructions={onExitInstructions} />}
             <GameBoard gameState={gameState} setGameState={setGameState} onLose={onLose} />
             {gameState.isLost && <LostModal score={gameState.score} onStart={onStart} />}
-            <div className='copyright'>Copyright © 2023 Yaron Shapira. All rights reserved.</div>
             <UtilityButtons onInstructions={onInstructions} onRestart={onRestart} />
         </div>
     )
