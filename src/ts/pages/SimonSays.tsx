@@ -38,21 +38,31 @@ export default function SimonSays() {
 
     function onStart() {
         setGameState({ score: 0, isLost: false, isPlaying: true })
+    }
+
+    function onExitInstructions() {
         setIsInstructionsOpen(false)
+        if (gameState.isPlaying) return
+
+        onStart()
     }
 
     function onInstructions() {
         setIsInstructionsOpen(true)
     }
 
+    async function onRestart() {
+        setGameState({ score: 0, isLost: false, isPlaying: true })
+    }
+
     return (
         <div className='simon-says'>
             <p className='high-score'>High Score: {highScore}</p>
-            {isInstructionsOpen && <InstructionsModal onStart={onStart} />}
+            {isInstructionsOpen && <InstructionsModal onExitInstructions={onExitInstructions} />}
             <GameBoard gameState={gameState} setGameState={setGameState} onLose={onLose} />
             {gameState.isLost && <LostModal score={gameState.score} onStart={onStart} />}
             <div className='copyright'>Copyright © 2023 Yaron Shapira. All rights reserved.</div>
-            <UtilityButtons onInstructions={onInstructions} onStart={onStart}/>
+            <UtilityButtons onInstructions={onInstructions} onRestart={onRestart} />
         </div>
     )
 }

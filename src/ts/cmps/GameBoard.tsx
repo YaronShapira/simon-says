@@ -31,11 +31,11 @@ export default function GameBoard({ gameState, setGameState, onLose }: IProps) {
     const colorTimeoutId = useRef<any>(null)
 
     useEffect(() => {
-        if (gameState.isPlaying) {
+        if (gameState.isPlaying && gameState.score === 0) {
             newGame()
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [gameState.isPlaying])
+    }, [gameState])
 
     useEffect(() => {
         playSimonOrder()
