@@ -1,33 +1,46 @@
 .lost-modal {
+    font-family: 'Rubik', sans-serif;
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 3;
     padding: 2rem;
-    background: $bg-color;
+    background: lighten($bg-color, 5);
     border-radius: 5px;
     display: flex;
+    max-width: 600px;
     flex-direction: column;
     box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px,
         rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
 
+    h4 {
+        font-size: 1.4rem;
+    }
     h2 {
         line-height: 3rem;
         font-size: 3rem;
         margin-bottom: 0;
         padding-bottom: 0;
+        margin-bottom: 2rem;
     }
     p {
-        font-size: 1.3rem;
+        font-size: 1rem;
+        margin-bottom: 0.7rem;
     }
     button {
         align-self: flex-end;
-        background: $text-color;
+        background: #1a1a1a;
+        color: white;
         border: none;
         outline: none;
         margin-top: 1rem;
-        padding: 0.2rem 1rem;
+        padding: 0.3rem 1rem;
+        border-radius: 6px;
+
+        &:hover {
+            background: darken(#1a1a1a, 2);
+        }
     }
 }
 

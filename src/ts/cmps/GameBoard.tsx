@@ -1,7 +1,7 @@
 import { useEffect, useRef, RefObject, useState } from 'react'
 import { utilService } from '../services/util.service'
 import { IState as Props } from '../pages/SimonSays'
-const SHOW_COLOR_TIME: number = 750
+const SHOW_COLOR_TIME: number = 500
 const simonColors: string[] = ['red', 'green', 'yellow', 'blue']
 
 interface IProps {
@@ -11,7 +11,7 @@ interface IProps {
 }
 
 export default function GameBoard({ gameState, setGameState, onLose }: IProps) {
-    const [simonOrder, setSimonOrder] = useState<string[]>(['red'])
+    const [simonOrder, setSimonOrder] = useState<string[]>([])
     const [userOrder, setUserOrder] = useState<string[]>([])
     const [isUserTurn, setIsUserTurn] = useState<Boolean>(false)
 
@@ -50,14 +50,26 @@ export default function GameBoard({ gameState, setGameState, onLose }: IProps) {
         setSimonOrder(prev => [...prev, simonChosenColor])
     }
 
-    // useEffect(() => {
-    //     if (gameState.isPlaying) {
-    //         setUserOrder([])
-    //         setIsUserTurn(false)
-    //         simonTurn()
-    //     }
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [gameState.isPlaying])
+    function newGame() {
+        setSimonOrder([])
+        setUserOrder([])
+        setIsUserTurn(false)
+        simonTurn()
+    }
+
+    async function nextSimonTurn() {
+        setUserOrder([])
+        setIsUserTurn(false)
+        simonTurn()
+        setGameState(prev => ({ ...prev, score: prev.score + 1 }))
+    }
+
+    useEffect(() => {
+        if (gameState.isPlaying) {
+            newGame()
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [gameState.isPlaying])
 
     useEffect(() => {
         playSimonOrder()
@@ -68,14 +80,13 @@ export default function GameBoard({ gameState, setGameState, onLose }: IProps) {
         if (!isUserTurn || !userOrder.at(-1)) return
 
         if (simonOrder[userOrder.length - 1] !== userOrder.at(-1)) {
+            // LOST
             const score = simonOrder.length - 1
             onLose(score)
             return
         }
         if (userOrder.length === simonOrder.length) {
-            setUserOrder([])
-            setIsUserTurn(false)
-            simonTurn()
+            nextSimonTurn()
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [userOrder])
@@ -86,7 +97,7 @@ export default function GameBoard({ gameState, setGameState, onLose }: IProps) {
                 <button className='simon-button red'></button>
                 <button className='simon-button yellow'></button>
                 <button className='simon-button blue'></button>
-                <div className='score'>{simonOrder.length - 1}</div>
+                <div className='score'>{gameState.score}</div>
             </div>
         </div>
     )
