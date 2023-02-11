@@ -89,11 +89,15 @@ export default function GameBoard({ gameState, setGameState, onLose }: IProps) {
         if (!elTarget.classList.contains('simon-button') || !isUserTurn) return
 
         const clickedColor: string = elTarget.classList[elTarget.classList.length - 1]
+
+        // if clicked on same color, clear the last timeout
         if (gameBoardRef.current?.classList.contains(clickedColor)) {
             clearTimeout(colorTimeoutId.current)
+        } else {
+            // new color
+            gameBoardRef.current?.classList.remove('green', 'blue', 'yellow', 'red')
+            gameBoardRef.current?.classList.add(clickedColor)
         }
-        gameBoardRef.current?.classList.remove('green', 'blue', 'yellow', 'red')
-        gameBoardRef.current?.classList.add(clickedColor)
         colorTimeoutId.current = setTimeout(() => {
             gameBoardRef.current?.classList.remove(clickedColor)
         }, SHOW_COLOR_TIME)
