@@ -2,19 +2,20 @@ import { useEffect, useRef, RefObject, useState } from 'react'
 import { utilService } from '../services/util.service'
 import { IState as Props } from '../pages/SimonSays'
 const SHOW_COLOR_TIME: number = 750
+const simonColors: string[] = ['red', 'green', 'yellow', 'blue']
 
 interface IProps {
     gameState: Props['gameState']
     setGameState: React.Dispatch<React.SetStateAction<Props['gameState']>>
+    onLose: (score: number) => void
 }
 
-export default function GameBoard({ gameState, setGameState }: IProps) {
-    const [simonOrder, setSimonOrder] = useState<string[]>([])
+export default function GameBoard({ gameState, setGameState, onLose }: IProps) {
+    const [simonOrder, setSimonOrder] = useState<string[]>(['red'])
     const [userOrder, setUserOrder] = useState<string[]>([])
-    const [isUserTurn, setIsUserTurn] = useState(false)
-    const gameBoardRef = useRef() as RefObject<HTMLDivElement>
+    const [isUserTurn, setIsUserTurn] = useState<Boolean>(false)
 
-    const simonColors = ['red', 'green', 'yellow', 'blue']
+    const gameBoardRef = useRef() as RefObject<HTMLDivElement>
 
     function onSimonButton(ev: React.MouseEvent<HTMLDivElement>) {
         const elTarget = ev.target as HTMLDivElement
@@ -44,12 +45,19 @@ export default function GameBoard({ gameState, setGameState }: IProps) {
     async function simonTurn() {
         await utilService.wait(SHOW_COLOR_TIME * 2)
         const simonChosenColor = utilService.getRandomItemFromArray(simonColors)
+
+        // this will trigger useEffect which will playSimonOrder()
         setSimonOrder(prev => [...prev, simonChosenColor])
     }
 
-    useEffect(() => {
-        
-    }, [gameState.isPlaying])
+    // useEffect(() => {
+    //     if (gameState.isPlaying) {
+    //         setUserOrder([])
+    //         setIsUserTurn(false)
+    //         simonTurn()
+    //     }
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [gameState.isPlaying])
 
     useEffect(() => {
         playSimonOrder()
@@ -60,7 +68,8 @@ export default function GameBoard({ gameState, setGameState }: IProps) {
         if (!isUserTurn || !userOrder.at(-1)) return
 
         if (simonOrder[userOrder.length - 1] !== userOrder.at(-1)) {
-            // setGameState(prev => ({ ...prev, isLost: true }))
+            const score = simonOrder.length - 1
+            onLose(score)
             return
         }
         if (userOrder.length === simonOrder.length) {
