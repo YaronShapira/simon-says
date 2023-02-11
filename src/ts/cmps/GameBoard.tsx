@@ -16,6 +16,8 @@ export default function GameBoard({ gameState, setGameState, onLose }: IProps) {
     const [isUserTurn, setIsUserTurn] = useState<Boolean>(false)
 
     const gameBoardRef = useRef() as RefObject<HTMLDivElement>
+    // const colorTimeoutId = useRef<ReturnType<typeof setTimeout> | null>(null)
+    const colorTimeoutId = useRef<any>(null)
 
     useEffect(() => {
         if (gameState.isPlaying) {
@@ -42,6 +44,7 @@ export default function GameBoard({ gameState, setGameState, onLose }: IProps) {
     }, [userOrder])
 
     async function simonTurn() {
+        // Better gameplay experience with a delay
         await utilService.wait(SHOW_COLOR_TIME * 2)
         const simonChosenColor = utilService.getRandomItemFromArray(simonColors)
 
@@ -66,12 +69,15 @@ export default function GameBoard({ gameState, setGameState, onLose }: IProps) {
     function onSimonButton(ev: React.MouseEvent<HTMLDivElement>) {
         const elTarget = ev.target as HTMLDivElement
         // check if clicked on simon button
-        if (![...elTarget.classList].includes('simon-button') || !isUserTurn) return
+        if (!elTarget.classList.contains('simon-button') || !isUserTurn) return
 
         const clickedColor: string = elTarget.classList[elTarget.classList.length - 1]
+        if (gameBoardRef.current?.classList.contains(clickedColor)) {
+            clearTimeout(colorTimeoutId.current)
+        }
         gameBoardRef.current?.classList.remove('green', 'blue', 'yellow', 'red')
         gameBoardRef.current?.classList.add(clickedColor)
-        setTimeout(() => {
+        colorTimeoutId.current = setTimeout(() => {
             gameBoardRef.current?.classList.remove(clickedColor)
         }, SHOW_COLOR_TIME)
 
@@ -83,7 +89,7 @@ export default function GameBoard({ gameState, setGameState, onLose }: IProps) {
             gameBoardRef.current?.classList.add(color)
             await utilService.wait(SHOW_COLOR_TIME)
             gameBoardRef.current?.classList.remove(color)
-            await utilService.wait(SHOW_COLOR_TIME - 350)
+            await utilService.wait(SHOW_COLOR_TIME - 300)
         }
         setIsUserTurn(true)
     }

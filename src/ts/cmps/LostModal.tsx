@@ -8,8 +8,8 @@ interface IProps {
 export default function LostModal({ score, onStart }: IProps) {
     return (
         <Modal>
-            <h2>You Lost!</h2>
-            <p>But hey, your score is {score}</p>
+            <h2 className='lost-header'>You Lost!</h2>
+            <p className='score'>But hey, your score is {score}</p>
             <button onClick={onStart}>Play Again</button>
         </Modal>
     )
