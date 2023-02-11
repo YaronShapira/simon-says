@@ -60,3 +60,9 @@
     z-index: 2;
     background: rgba(0, 0, 0, 0.7);
 }
+
+@media screen and (max-width: $mobile-size) {
+    .modal {
+        width: 90vw;
+    }
+}
