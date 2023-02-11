@@ -4,7 +4,6 @@ import LostModal from '../cmps/LostModal'
 import { simonSaysService } from '../services/simonsays.service'
 import InstructionsModal from '../cmps/InstructionsModal'
 
-
 export interface IState {
     gameState: {
         isPlaying: boolean
@@ -33,7 +32,7 @@ export default function SimonSays() {
     }
 
     function onStart() {
-        setGameState(prev => ({ ...prev, isLost: false, isPlaying: true }))
+        setGameState({ score: 0, isLost: false, isPlaying: true })
         setIsInstructionsOpen(false)
     }
     const [highScore, setHighScore] = useState(0)

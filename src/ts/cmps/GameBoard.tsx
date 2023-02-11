@@ -46,8 +46,14 @@ export default function GameBoard({ gameState, setGameState, onLose }: IProps) {
         if (!isUserTurn || !userOrder.at(-1)) return
 
         if (simonOrder[userOrder.length - 1] !== userOrder.at(-1)) {
+            // Lose
+            new Audio(audioLoseURL).play()
             return onLose()
+        } else {
+            // Correct
+            playSound(simonOrder[userOrder.length - 1])
         }
+
         if (userOrder.length === simonOrder.length) {
             nextSimonTurn()
         }
@@ -96,7 +102,10 @@ export default function GameBoard({ gameState, setGameState, onLose }: IProps) {
     }
 
     function playSound(clickedColor: string) {
-        simonSoundsMap[clickedColor].play()
+        const audio = simonSoundsMap[clickedColor]
+        audio.pause()
+        audio.currentTime = 0
+        audio.play()
     }
 
     async function playSimonOrder() {
